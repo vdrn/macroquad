@@ -808,8 +808,8 @@ impl Emitter {
                 gpu.data.y = cpu.lived / cpu.lifetime;
             }
 
-            //cpu.lived = f32::min(cpu.lived + dt, cpu.lifetime);
-            cpu.lived += dt;
+            cpu.lived = f32::min(cpu.lived + dt, cpu.lifetime);
+            // cpu.lived += dt;
             cpu.velocity += self.config.gravity * dt;
 
             if let Some(atlas) = &self.config.atlas {
@@ -840,9 +840,7 @@ impl Emitter {
             if self.cpu_counterpart[i].lived >= self.cpu_counterpart[i].lifetime
                 || self.cpu_counterpart[i].lived > self.config.lifetime
             {
-                if self.cpu_counterpart[i].lived != self.cpu_counterpart[i].lifetime {
-                    self.particles_spawned -= 1;
-                }
+                self.particles_spawned -= 1;
                 self.gpu_particles.remove(i);
                 self.cpu_counterpart.remove(i);
             }
